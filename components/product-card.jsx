@@ -10,7 +10,7 @@ function ExtraLongVerticalCard({product}) {
   const [wished, setWished] = useState(false)
 
   return (
-    <div className='w-max-[20rem] sm:w-max-none sm:w-[19rem] lg:w-[15rem] xl:w-[19rem] border border-gray-300 hover:border-primary-color  shadow-md sm:shadow-none hover:shadow-md rounded-sm p-3 my-3 mx-2 sm:mx-0 lg:my-0'>
+    <div className='w-max-[18rem] sm:w-max-none sm:w-[19rem] lg:w-[15rem] xl:w-[19rem] border border-gray-300 hover:border-primary-color  shadow-md sm:shadow-none hover:shadow-md rounded-sm p-3 my-3 mx-6 sm:mx-0 lg:my-0'>
       <div className='flex flex-col space-y-1'>
         <div className="relative">
         <div className='absolute top-1 right-1 z-20 flex items-center justify-end space-x-2'>

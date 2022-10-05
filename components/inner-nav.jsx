@@ -1,8 +1,9 @@
 import { faCircleArrowLeft, faCircleArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import LinkBox from "./link-box";
 import ProductCard from "./product-card";
+import useWindowSize from "./use-window-size"
 
 export default function InnerNav({header='new header', products=[]}) {
   const categories = products.map((product) =>
@@ -48,57 +49,148 @@ export default function InnerNav({header='new header', products=[]}) {
 }
 
 function Content({contentList}) {
-  const SKIP = 4
-  const [start, setStart] = useState(0)
-  const [end, setEnd] = useState(SKIP)
-  const [activeContent, setActiveContent] = useState(
-    contentList.slice(start, end)
-  )
+  const size = useWindowSize()
+  const [groups, setGroups] = useState([])
+  const [activeIndex, setActiveIndex] = useState(0)
 
+  // Re-assign transition if groups change.
   useEffect(() => {
-    setActiveContent(contentList.slice(start, end))
-  }, [start, end])
+    // Select all slides
+    const slides = document.querySelectorAll('.slide')
 
+    // loop through slides and set each slides translateX
+    slides.forEach((slide, indx) => {
+      slide.style.transform = `translateX(${indx * 100}%)`
+    })
+
+    // select next slide button
+    const nextSlide = document.querySelector('.btn-next')
+
+    // current slide counter
+    let curSlide = 0
+    // maximum number of slides
+    let maxSlide = slides.length - 1
+
+    const next = function () {
+      // check if current slide is the last and reset current slide
+      if (curSlide === maxSlide) {
+        curSlide = 0
+      } else {
+        curSlide++
+      }
+
+      //   move slide by -100%
+      slides.forEach((slide, indx) => {
+        slide.style.transform = `translateX(${100 * (indx - curSlide)}%)`
+      })
+
+      // increment active index
+      setActiveIndex((prev) => prev + 1)
+    }
+
+    // add event listener and navigation functionality
+    nextSlide.addEventListener('click', next)
+
+    // select next slide button
+    const prevSlide = document.querySelector('.btn-prev')
+
+    const prev = function () {
+      // check if current slide is the first and reset current slide to last
+      if (curSlide === 0) {
+        curSlide = maxSlide
+      } else {
+        curSlide--
+      }
+
+      // move slide by 100%
+      slides.forEach((slide, indx) => {
+        slide.style.transform = `translateX(${100 * (indx - curSlide)}%)`
+      })
+
+      // decrement active index
+      setActiveIndex((prev) => prev - 1)
+    }
+
+    // add event listener and navigation functionality
+    prevSlide.addEventListener('click', prev)
+
+    return () => {
+      prevSlide.removeEventListener('click', prev)
+      nextSlide.removeEventListener('click', next)
+    }
+  }, [groups])
+
+  // Restart scroll and update grouping system when content-list changes.
   useEffect(() => {
-    setStart(0)
-    setEnd(SKIP)
-    setActiveContent(contentList.slice(0, SKIP))
+    setActiveIndex(0)
+    setGroups(group(contentList, size.width))
   }, [contentList])
+
+  // Update grouping system when size of window changes.
+  useEffect(() => {
+    setGroups(group(contentList, size.width))
+  }, [size.width])
 
   return (
     <div>
-      <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 space-y-5 sm:space-y-0 place-items-center'>
-        {activeContent.map((product) => (
-          <ProductCard.ExtraLongVerticalCard
-            key={product.slug}
-            product={product}
-          />
+      <div className='slider w-full max-w-full h-[490px] relative overflow-hidden rounded-2xl'>
+        {groups.map((group) => (
+          <div key={group[0].slug} className='slide w-full max-w-full h-[500px] absolute transition duration-500'>
+            <div className='w-full h-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 space-y-5 sm:space-y-0 place-items-center'>
+              {group.map((product) => (
+                <ProductCard.ExtraLongVerticalCard
+                  key={product.slug}
+                  product={product}
+                />
+              ))}
+            </div>
+          </div>
         ))}
       </div>
       <div className='w-full flex items-center justify-end space-x-2 pr-10 mt-5'>
         <button
           type='button'
-          disabled={start === 0}
-          className='disabled:opacity-50'
-          onClick={() => {
-            setStart((prev) => prev - SKIP)
-            setEnd((prev) => prev - SKIP)
-          }}
+          disabled={activeIndex === 0}
+          className='btn-prev disabled:opacity-50 active:transform active:scale-[1.1]'
         >
-          <FontAwesomeIcon icon={faCircleArrowLeft} className='text-primary-color text-3xl' />
+          <FontAwesomeIcon
+            icon={faCircleArrowLeft}
+            className='text-primary-color text-3xl'
+          />
         </button>
         <button
           type='button'
-          disabled={end >= contentList.length - 1}
-          className='disabled:opacity-50'
-          onClick={() => {
-            setStart((prev) => prev + SKIP)
-            setEnd((prev) => prev + SKIP)
-          }}
+          disabled={activeIndex >= groups.length - 1}
+          className='btn-next disabled:opacity-50 active:transform active:scale-[1.1]'
         >
-          <FontAwesomeIcon icon={faCircleArrowRight} className='text-primary-color text-3xl' />
+          <FontAwesomeIcon
+            icon={faCircleArrowRight}
+            className='text-primary-color text-3xl'
+          />
         </button>
       </div>
     </div>
   )
+}
+
+function group(list, screenWidth) {
+  const sm = 640,
+    lg = 1024,
+    groupedList = []
+
+  let skip = 1
+
+  if (screenWidth >= lg) skip = 4
+  else if (screenWidth >= sm) skip = 2
+
+  let start, end
+  for (
+    start = 0, end = skip;
+    end < (list.length + skip);
+    start += skip, end += skip
+  ) {
+    groupedList.push(list.slice(start, end))
+  }
+
+  return groupedList
 }

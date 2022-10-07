@@ -1,6 +1,6 @@
 import { faCircleArrowLeft, faCircleArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import LinkBox from "./link-box";
 import ProductCard from "./product-card";
 import useWindowSize from "./use-window-size"
@@ -28,7 +28,7 @@ export default function InnerNav({header='new header', products=[]}) {
           </div>
           <div className='w-[40%] h-1 rounded-2xl bg-primary-color mt-1' />
         </div>
-        <div className="flex justify-evenly items-center">
+        <div className="flex justify-evenly items-center w-full sm:w-fit">
           {navs.map((nav) => (
             <LinkBox
               key={nav}
@@ -55,6 +55,7 @@ function Content({contentList}) {
 
   // Re-assign transition if groups change.
   useEffect(() => {
+    setActiveIndex(0)
     // Select all slides
     const slides = document.querySelectorAll('.slide')
 
@@ -84,8 +85,8 @@ function Content({contentList}) {
         slide.style.transform = `translateX(${100 * (indx - curSlide)}%)`
       })
 
-      // increment active index
-      setActiveIndex((prev) => prev + 1)
+      // Update active index 
+      setActiveIndex(curSlide)
     }
 
     // add event listener and navigation functionality
@@ -107,8 +108,8 @@ function Content({contentList}) {
         slide.style.transform = `translateX(${100 * (indx - curSlide)}%)`
       })
 
-      // decrement active index
-      setActiveIndex((prev) => prev - 1)
+      // Update active index 
+      setActiveIndex(curSlide)
     }
 
     // add event listener and navigation functionality
@@ -122,18 +123,12 @@ function Content({contentList}) {
 
   // Restart scroll and update grouping system when content-list changes.
   useEffect(() => {
-    setActiveIndex(0)
     setGroups(group(contentList, size.width))
-  }, [contentList])
-
-  // Update grouping system when size of window changes.
-  useEffect(() => {
-    setGroups(group(contentList, size.width))
-  }, [size.width])
+  }, [contentList, size.width])
 
   return (
-    <div>
-      <div className='slider w-full max-w-full h-[490px] relative overflow-hidden rounded-2xl'>
+    <div className="slider">
+      <div className='w-full max-w-full h-[490px] relative overflow-hidden rounded-2xl'>
         {groups.map((group) => (
           <div key={group[0].slug} className='slide w-full max-w-full h-[500px] absolute transition duration-500'>
             <div className='w-full h-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 space-y-5 sm:space-y-0 place-items-center'>
@@ -160,7 +155,7 @@ function Content({contentList}) {
         </button>
         <button
           type='button'
-          disabled={activeIndex >= groups.length - 1}
+          disabled={activeIndex === groups.length - 1}
           className='btn-next disabled:opacity-50 active:transform active:scale-[1.1]'
         >
           <FontAwesomeIcon

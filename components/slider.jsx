@@ -11,17 +11,30 @@ import { faChevronCircleLeft, faChevronCircleRight } from "@fortawesome/free-sol
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Slider = ({
-  sideControls=true,
-  bottomControls=false,
+  autoplay=false,
+  loop=false,
+  dots=false,
+  thumbs=false,
   children,
   className = '',
 }) => {
+  let interval = 0
   const [currentSlide, setCurrentSlide] = useState(0)
   const [isMounted, setIsMounted] = useState(false)
   const sliderContainerRef = useRef(null)
   const thumbsContainerRef = useRef(null)
 
+  const autoPlay = React.useCallback((run) => {
+    clearInterval(interval)
+    interval = setInterval(() => {
+      if (run && slider.current) {
+        slider.current.next()
+      }
+    }, 2000)
+  }, [autoplay])
+  
   const [ref, slider] = useKeenSlider({
+    loop: loop,
     slides: { perView: 1 },
     created: () => setIsMounted(true),
     slideChanged(s) {
@@ -37,10 +50,19 @@ const Slider = ({
         }
       }
     },
+    dragStart: () => {
+      autoplay && autoPlay(false);
+    },
+    dragEnd: () => {
+      autoplay && autoPlay(true);
+    }
   })
 
+  // Set autoPlay to true, and
   // Stop the history navigation gesture on touch devices
   useEffect(() => {
+    autoplay && autoPlay(true)
+
     const preventNavigation = (event) => {
       // Center point of the touch area
       const touchXPosition = event.touches[0].pageX
@@ -62,15 +84,25 @@ const Slider = ({
 
     slider.addEventListener('touchstart', preventNavigation)
 
+    // add autoPlay on hover
+    slider.addEventListener('mouseover', () => {
+      autoplay && autoPlay(false)
+    })
+    slider.addEventListener('mouseout', () => {
+      autoplay && autoPlay(true)
+    })
+
     return () => {
       if (slider) {
         slider.removeEventListener('touchstart', preventNavigation)
+        slider.removeEventListener('mouseover', () => autoPlay(false))
+        slider.removeEventListener('mouseout', () => autoPlay(true))
       }
     }
   }, [])
 
   return (
-    <div ref={sliderContainerRef} className='relative'>
+    <div ref={sliderContainerRef} className='relative group'>
       <div
         ref={ref}
         className={`${isMounted ? 'block' : 'hidden'} keen-slider`}
@@ -92,34 +124,70 @@ const Slider = ({
         })}
       </div>
 
-      
-      {isMounted && slider.current &&(
+      {isMounted && slider.current && (
         <>
-          <button
-            type='button'
-            disabled={currentSlide === 0}
-            onClick={(e) => e.stopPropagation() || slider.current?.prev()}
-            className='absolute left-2 sm:left-0 top-[40%] disabled:opacity-30 active:transform active:scale-[1.1]'
+          <div
+            className={`absolute left-2 sm:left-0 top-0 h-full ${
+              autoplay
+                ? 'group-hover:flex items-center hidden'
+                : 'flex items-center'
+            }`}
           >
-            <FontAwesomeIcon
-              icon={faChevronCircleLeft}
-              className='text-primary-color text-5xl'
-            />
-          </button>
-          <button
-            type='button'
-            onClick={(e) => e.stopPropagation() || slider.current?.next()}
-            disabled={
-              currentSlide === slider.current.track.details.slides.length - 1
-            }
-            className='absolute right-2 sm:right-0 top-[40%] disabled:opacity-30 active:transform active:scale-[1.1]'
+            <button
+              type='button'
+              disabled={!loop && currentSlide === 0}
+              onClick={(e) => e.stopPropagation() || slider.current?.prev()}
+              className='opacity-80 disabled:opacity-0 active:transform active:scale-[1.1]'
+            >
+              <FontAwesomeIcon
+                icon={faChevronCircleLeft}
+                className='text-primary-color text-5xl'
+              />
+            </button>
+          </div>
+          <div
+            className={`absolute right-2 sm:right-0 top-0 h-full ${
+              autoplay
+                ? 'group-hover:flex items-center hidden'
+                : 'flex items-center'
+            }`}
           >
-            <FontAwesomeIcon
-              icon={faChevronCircleRight}
-              className='text-primary-color text-5xl'
-            />
-          </button>
+            <button
+              type='button'
+              onClick={(e) => e.stopPropagation() || slider.current?.next()}
+              disabled={
+                !loop &&
+                currentSlide === slider.current.track.details.slides.length - 1
+              }
+              className='opacity-80 disabled:opacity-0 active:transform active:scale-[1.1]'
+            >
+              <FontAwesomeIcon
+                icon={faChevronCircleRight}
+                className='text-primary-color text-5xl'
+              />
+            </button>
+          </div>
         </>
+      )}
+
+      {isMounted && slider.current && dots && (
+        <div className='absolute bottom-3 flex py-[10px] px-0 justify-center w-full'>
+          {[...Array(slider.current.track.details.slides.length).keys()].map(
+            (idx) => {
+              return (
+                <button
+                  key={idx}
+                  onClick={() => {
+                    slider.current?.moveToIdx(idx)
+                  }}
+                  className={`border-none w-[10px] h-[10px] ${
+                    currentSlide === idx ? 'bg-primary-color' : 'bg-[#c5c5c5]'
+                  } rounded-[50%] my-0 mx-[5px] p-[5px] cursor-pointer focus:outline-none`}
+                />
+              )
+            }
+          )}
+        </div>
       )}
     </div>
   )

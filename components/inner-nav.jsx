@@ -25,8 +25,8 @@ export default function InnerNav({header='new header', products=[]}) {
   }, [size.width, contentList])
 
   return (
-    <div className='w-full sm:max-w-7xl sm:mx-auto sm:px-1 my-10'>
-      <div className='flex flex-wrap justify-between items-center px-1 py-3'>
+    <div className='w-full sm:max-w-7xl sm:mx-auto sm:px-3 my-10 bg-white rounded-md p-5'>
+      <div className='flex flex-wrap justify-between items-center p-1 mb-5'>
         <div className='w-fit'>
           <div className='text-xl font-bold text-gray-900 bg-white leading-none uppercase'>
             {header}
@@ -66,7 +66,7 @@ function Content({groups}) {
     return (
       <Slider>
         {groups.map((group, idx) => (
-          <div key={`group-${idx}`} className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 place-items-center'>
+          <div key={`group-${idx}`} className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 place-items-center'>
             {group.map((product) => (
               <ProductCard.ExtraLongVerticalCard
                 key={product.slug}
@@ -86,13 +86,15 @@ function Content({groups}) {
 
 function group(list, screenWidth) {
   const sm = 640,
+    md = 768,
     lg = 1024,
     groupedList = []
 
-  let skip = 1
+  let skip = 2
 
-  if (screenWidth >= lg) skip = 4
-  else if (screenWidth >= sm) skip = 2
+  if (screenWidth >= lg) skip = 5
+  else if (screenWidth >= md) skip = 4
+  else if (screenWidth >= sm) skip = 3
 
   let start, end
   for (

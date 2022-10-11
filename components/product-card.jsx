@@ -10,14 +10,14 @@ function ExtraLongVerticalCard({product}) {
   const [wished, setWished] = useState(false)
 
   return (
-    <div className='w-72 sm:w-max-none sm:w-[19rem] lg:w-[15rem] xl:w-[19rem] border border-gray-300 hover:border-primary-color shadow-md sm:shadow-none hover:shadow-md rounded-sm p-1 my-3 sm:mx-0 lg:my-0'>
+    <div className='w-48 sm:w-max-none sm:w-[12.6rem] md:w-[11.5rem] lg:w-[12.2rem] xl:w-[15rem] border border-gray-300 hover:border-primary-color shadow-md sm:shadow-none hover:shadow-md rounded-sm p-1 my-3 sm:mx-0 lg:my-0'>
       <div className='flex flex-col space-y-1'>
         <div className="relative">
         <div className='absolute top-1 right-1 z-20 flex items-center justify-end space-x-2'>
-          <div className='border border-primary-color px-2 py-1 leading-none bg-white text-primary-color text-sm font-medium uppercase'>
+          <div className='border border-primary-color px-2 py-1 leading-none bg-white text-primary-color text-xs font-medium uppercase'>
             -30%
           </div>
-          <div className='border border-primary-color px-2 py-1 leading-none bg-primary-color text-white text-sm font-medium uppercase'>
+          <div className='border border-primary-color px-2 py-1 leading-none bg-primary-color text-white text-xs font-medium uppercase'>
             NEW
           </div>
         </div>
@@ -25,17 +25,17 @@ function ExtraLongVerticalCard({product}) {
         </div>
       </div>
       <div className='flex flex-col justify-center items-center space-y-2 my-4'>
-        <div className='text-sm font-medium uppercase text-gray-400 leading-none'>
+        <div className='text-xs font-medium uppercase text-gray-400 leading-none'>
           CATEGORY
         </div>
-        <div className='text-base font-medium uppercase text-gray-700 leading-none hover:underline line-clamp-1'>
+        <div className='text-sm font-medium uppercase text-gray-700 leading-none hover:underline line-clamp-1'>
           <Link href={`/products/${slug}`}>{name}</Link>
         </div>
-        <div className='flex justify-center items-center space-x-4 mt-5 py-2 border-y border-y-gray-400 w-[70%]'>
-          <span className='text-2xl font-semibold uppercase text-black leading-none'>
+        <div className='flex justify-center items-center space-x-4 mt-5 py-2 border-y border-y-gray-400 w-[50%]'>
+          <span className='text-xl font-semibold uppercase text-black leading-none'>
             ${price}
           </span>
-          <span className='text-base font-medium uppercase text-gray-500 leading-none line-through'>
+          <span className='text-sm font-medium uppercase text-gray-500 leading-none line-through'>
             $500
           </span>
         </div>
@@ -47,14 +47,14 @@ function ExtraLongVerticalCard({product}) {
             Buy
           </span>
         </div>
-        <div className='flex items-center space-x-2 h-fit w-fit py-1 px-4 cursor-pointer'>
+        <div className='flex justify-evenly items-center gap-2 h-fit w-fit py-1 px-4 cursor-pointer'>
           <FontAwesomeIcon
             icon={wished ? faHeart2 : faHeart1}
-            className='text-primary-color text-2xl lg:text-base xl:text-xl'
+            className='text-primary-color text-xl lg:text-sm xl:text-lg'
             onClick={() => setWished((prev) => !prev)}
           />
-          <span className='capitalize text-base font-medium text-primary-color leading-none hidden lg:block'>
-            Add to wishlist
+          <span className='capitalize text-sm font-medium text-primary-color leading-none hidden lg:block'>
+            Wish
           </span>
         </div>
       </div>
@@ -95,13 +95,13 @@ function LongVerticalCard({product}) {
 function ShortVerticalCard({product}) {
   const {name, price, mainImage, slug} = product 
   return (
-    <div className='w-72 sm:w-52 flex-shrink-0 p-0 bg-white shadow-xl sm:shadow-none sm:hover:shadow-xl rounded-sm m-4'>
+    <div className='w-40 flex-shrink-0 p-0 bg-white shadow-xl sm:shadow-none sm:hover:shadow-xl rounded-sm m-4'>
       <div className="">
         <Image data={mainImage.responsiveImage} />
       </div>
       <div className="px-2 py-1 bg-white">
-        <div className="text-base font-light leading-tight capitalize line-clamp-1 my-1 hover:underline"><Link href={`/products/${slug}`}>{name}</Link></div>
-        <div className="text-lg font-medium leading-tight my-1">${price}</div>
+        <div className="text-sm font-medium leading-tight capitalize line-clamp-1 my-1 hover:underline"><Link href={`/products/${slug}`}>{name}</Link></div>
+        <div className="text-xl font-bold leading-tight my-1">${price}</div>
       </div>
     </div>
   )

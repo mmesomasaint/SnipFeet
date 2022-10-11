@@ -11,7 +11,7 @@ export default function Header() {
   const [openNav, setOpenNav] = useState(false)
 
   return (
-    <div className='bg-black translate-all duration-700 mb-10'>
+    <div className='bg-black translate-all duration-700 mb-6'>
       <div className='bg-gray-900'>
         <div className='hidden sm:flex justify-between mx-4 sm:max-w-7xl sm:mx-auto sm:px-2 py-1'>
           <div className='flex justify-around space-x-2 sm:space-x-4'>

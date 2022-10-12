@@ -102,11 +102,60 @@ const Slider = ({
   }, [])
 
   return (
-    <div ref={sliderContainerRef} className='relative group'>
+    <div
+      ref={sliderContainerRef}
+      className='group flex flex-col justify-center gap-3'
+    >
       <div
         ref={ref}
-        className={`${isMounted ? 'block' : 'hidden'} keen-slider`}
+        className={`${isMounted ? 'block' : 'hidden'} keen-slider relative`}
       >
+        {isMounted && slider.current && (
+          <>
+            <div
+              className={`absolute left-2 sm:left-0 top-0 z-50 h-full ${
+                autoplay
+                  ? 'group-hover:flex items-center hidden'
+                  : 'flex items-center'
+              }`}
+            >
+              <button
+                type='button'
+                disabled={!loop && currentSlide === 0}
+                onClick={(e) => e.stopPropagation() || slider.current?.prev()}
+                className='opacity-80 disabled:opacity-0 active:transform active:scale-[1.1]'
+              >
+                <FontAwesomeIcon
+                  icon={faChevronCircleLeft}
+                  className='text-primary-color text-5xl'
+                />
+              </button>
+            </div>
+            <div
+              className={`absolute right-2 sm:right-0 top-0 z-50 h-full ${
+                autoplay
+                  ? 'group-hover:flex items-center hidden'
+                  : 'flex items-center'
+              }`}
+            >
+              <button
+                type='button'
+                onClick={(e) => e.stopPropagation() || slider.current?.next()}
+                disabled={
+                  !loop &&
+                  currentSlide ===
+                    slider.current.track.details.slides.length - 1
+                }
+                className='opacity-80 disabled:opacity-0 active:transform active:scale-[1.1]'
+              >
+                <FontAwesomeIcon
+                  icon={faChevronCircleRight}
+                  className='text-primary-color text-5xl'
+                />
+              </button>
+            </div>
+          </>
+        )}
         {Children.map(children, (child) => {
           // Add the keen-slider__slide className to children
           if (isValidElement(child)) {
@@ -124,54 +173,8 @@ const Slider = ({
         })}
       </div>
 
-      {isMounted && slider.current && (
-        <>
-          <div
-            className={`absolute left-2 sm:left-0 top-0 h-full ${
-              autoplay
-                ? 'group-hover:flex items-center hidden'
-                : 'flex items-center'
-            }`}
-          >
-            <button
-              type='button'
-              disabled={!loop && currentSlide === 0}
-              onClick={(e) => e.stopPropagation() || slider.current?.prev()}
-              className='opacity-80 disabled:opacity-0 active:transform active:scale-[1.1]'
-            >
-              <FontAwesomeIcon
-                icon={faChevronCircleLeft}
-                className='text-primary-color text-5xl'
-              />
-            </button>
-          </div>
-          <div
-            className={`absolute right-2 sm:right-0 top-0 h-full ${
-              autoplay
-                ? 'group-hover:flex items-center hidden'
-                : 'flex items-center'
-            }`}
-          >
-            <button
-              type='button'
-              onClick={(e) => e.stopPropagation() || slider.current?.next()}
-              disabled={
-                !loop &&
-                currentSlide === slider.current.track.details.slides.length - 1
-              }
-              className='opacity-80 disabled:opacity-0 active:transform active:scale-[1.1]'
-            >
-              <FontAwesomeIcon
-                icon={faChevronCircleRight}
-                className='text-primary-color text-5xl'
-              />
-            </button>
-          </div>
-        </>
-      )}
-
       {isMounted && slider.current && dots && (
-        <div className='absolute bottom-3 flex py-[10px] px-0 justify-center w-full'>
+        <div className='absolute bottom-3 flex py-[10px] px-0 justify-center w-full border'>
           {[...Array(slider.current.track.details.slides.length).keys()].map(
             (idx) => {
               return (
@@ -187,6 +190,33 @@ const Slider = ({
               )
             }
           )}
+        </div>
+      )}
+
+      {thumbs && (
+        <div
+          className='md:h-30 w-full h-full bg-white overflow-y-hidden overflow-x-auto whitespace-nowrap h-24 flex justify-center gap-1 md:gap-4 py-2'
+          ref={thumbsContainerRef}
+        >
+          {slider &&
+            Children.map(children, (child, idx) => {
+              if (isValidElement(child)) {
+                return {
+                  ...child,
+                  props: {
+                    ...child.props,
+                    className: `border mx-3 md:hover:transform md:hover:scale-[1.02] md:w-16 overflow-hidden inline-block cursor-pointer h-fit w-20 w-[calc(100%_/_3)] ${
+                      currentSlide === idx ? 'border-primary-color' : ''
+                    }`,
+                    id: `thumb-${idx}`,
+                    onClick: () => {
+                      slider.current?.moveToIdx(idx)
+                    },
+                  },
+                }
+              }
+              return child
+            })}
         </div>
       )}
     </div>

@@ -10,7 +10,7 @@ function ExtraLongVerticalCard({product}) {
   const [wished, setWished] = useState(false)
 
   return (
-    <div className='w-48 sm:w-max-none sm:w-[12.6rem] md:w-[11.5rem] lg:w-[12.2rem] xl:w-[15rem] border border-gray-300 hover:border-primary-color shadow-md sm:shadow-none hover:shadow-md rounded-sm p-1 my-3 sm:mx-0 lg:my-0'>
+    <div className='hover:z-30 w-48 sm:w-max-none sm:w-[12.6rem] md:w-[11.5rem] lg:w-[12.2rem] xl:w-[15rem] border border-gray-300 hover:border-primary-color shadow-md sm:shadow-none hover:shadow-md rounded-sm p-1 my-3 sm:mx-0 lg:my-0'>
       <div className='flex flex-col space-y-1'>
         <div className="relative">
         <div className='absolute top-1 right-1 z-20 flex items-center justify-end space-x-2'>
@@ -95,7 +95,7 @@ function LongVerticalCard({product}) {
 function ShortVerticalCard({product}) {
   const {name, price, mainImage, slug} = product 
   return (
-    <div className='w-40 flex-shrink-0 p-0 bg-white shadow-xl sm:shadow-none sm:hover:shadow-xl rounded-sm m-4'>
+    <div className='hover:transform hover:scale-[1.02] w-40 flex-shrink-0 p-0 bg-white shadow-xl sm:shadow-none sm:hover:shadow-xl rounded-sm m-4'>
       <div className="">
         <Image data={mainImage.responsiveImage} />
       </div>

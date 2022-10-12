@@ -6,12 +6,14 @@ import { faEnvelope, faHeart } from '@fortawesome/free-regular-svg-icons'
 import Image from 'next/image'
 import Search from './search'
 import LinkBox from './link-box'
+import { useRouter } from 'next/router'
 
 export default function Header() {
   const [openNav, setOpenNav] = useState(false)
+  const router = useRouter()
 
   return (
-    <div className='bg-black translate-all duration-700 mb-6'>
+    <div className='bg-black translate-all duration-700'>
       <div className='bg-gray-900'>
         <div className='hidden sm:flex justify-between mx-4 sm:max-w-7xl sm:mx-auto sm:px-2 py-1'>
           <div className='flex justify-around space-x-2 sm:space-x-4'>
@@ -68,9 +70,11 @@ export default function Header() {
       >
         <div className='mx-4 sm:max-w-7xl sm:mx-auto sm:px-2'>
           <div className='flex flex-col sm:flex-row justify-start sm:items-center space-x-1'>
-            {['Home', 'Hot Deals', 'Collections', 'Brands', 'Our Story'].map((title) => (
-              <LinkBox key={title}>{title}</LinkBox>
-            ))}
+            <LinkBox href='/' active={router.pathname === ''}>Home</LinkBox>
+            <LinkBox href='/hot-deals' active={router.pathname === 'hot-deals'}>Hot Deals</LinkBox>
+            <LinkBox href='/collections' active={router.pathname === 'collections'}>Collections</LinkBox>
+            <LinkBox href='/brands' active={router.pathname === 'brands'}>Brands</LinkBox>
+            <LinkBox href='/our-story' active={router.pathname === 'our-story'}>Our Story</LinkBox>
           </div>
         </div>
       </div>

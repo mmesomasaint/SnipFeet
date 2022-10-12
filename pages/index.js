@@ -11,13 +11,13 @@ import { getHomeData } from '../lib/page'
 
 export default function Home({showcase, recent, topCollections, newProducts}) {
   return (
-    <div className=' bg-[#b9f8e9]'>
+    <div className='bg-[#b9f8e9]'>
       <Head>
         <title>SnipFeet - Home</title>
       </Head>
       <Header />
 
-      <main className=' bg-[#b9f8e9] sm:max-w-7xl sm:mx-auto px-2'>
+      <main className='bg-[#b9f8e9] sm:max-w-7xl sm:mx-auto px-2 mt-6'>
         <div className='grid grid-cols-1 lg:grid-cols-7 gap-4 mb-7'>
           <div className='lg:col-span-5 rounded-sm'>
             <Slider loop dots autoplay>

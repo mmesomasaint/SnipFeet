@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
-import ProductCard from "./product-card";
-import useWindowSize from "./use-window-size"
-import Slider from "./slider";
+import ProductCard from "../product/product-card";
+import useWindowSize from "../hooks/use-window-size"
+import Slider from "../slider";
 
 export default function InnerNav({header='new header', products=[]}) {
   const categories = products.map((product) =>
@@ -25,9 +25,9 @@ export default function InnerNav({header='new header', products=[]}) {
   }, [size.width, contentList])
 
   return (
-    <div className='w-full sm:max-w-7xl sm:mx-auto sm:px-3 my-10 bg-white rounded-md p-5'>
+    <div className='w-full sm:max-w-7xl sm:mx-auto sm:px-3 my-10 bg-white rounded-xl p-1 sm:p-5'>
       <div className='flex flex-wrap justify-between items-center p-1 mb-5'>
-        <div className='w-fit'>
+        <div className='w-fit my-3 sm:my-0'>
           <div className='text-xl font-bold text-gray-900 bg-white leading-none uppercase'>
             {header}
           </div>
@@ -39,7 +39,7 @@ export default function InnerNav({header='new header', products=[]}) {
               key={nav}
               className={`border border-primary-color ${
                 activeNav === nav ? 'bg-primary-color' : 'bg-white'
-              } mt-3 sm:mt-0 my-1 mx-2 sm:mx-4 px-2 sm:px-4 w-fit group cursor-pointer`}
+              } mt-3 sm:mt-0 my-1 mx-1 sm:mx-4 px-2 sm:px-4 py-0 sm:py-1 w-fit group cursor-pointer`}
               onClick={() => {
                 setActiveNav(nav)
                 setContentList(content(nav))
@@ -48,7 +48,7 @@ export default function InnerNav({header='new header', products=[]}) {
               <div
                 className={`${
                   activeNav === nav ? 'text-white' : 'text-gray-700'
-                } text-base font-extrabold group-hover:opacity-60 uppercase`}
+                } text-sm sm:text-base font-bold sm:font-extrabold leading-tight sm:leading-none group-hover:opacity-60 uppercase`}
               >
                 {nav.replace('Collection', '')}
               </div>
@@ -66,7 +66,7 @@ function Content({groups}) {
     return (
       <Slider>
         {groups.map((group, idx) => (
-          <div key={`group-${idx}`} className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 place-items-center'>
+          <div key={`group-${idx}`} className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 place-items-center gap-1 sm:gap-0'>
             {group.map((product) => (
               <ProductCard.ExtraLongVerticalCard
                 key={product.slug}

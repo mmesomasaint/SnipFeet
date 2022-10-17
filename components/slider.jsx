@@ -104,7 +104,7 @@ const Slider = ({
   return (
     <div
       ref={sliderContainerRef}
-      className='group flex flex-col justify-center gap-3'
+      className='relative group flex flex-col justify-center gap-3'
     >
       <div
         ref={ref}
@@ -174,7 +174,7 @@ const Slider = ({
       </div>
 
       {isMounted && slider.current && dots && (
-        <div className='absolute bottom-3 flex py-[10px] px-0 justify-center w-full border'>
+        <div className='absolute bottom-3 flex py-[10px] px-0 justify-center w-full'>
           {[...Array(slider.current.track.details.slides.length).keys()].map(
             (idx) => {
               return (

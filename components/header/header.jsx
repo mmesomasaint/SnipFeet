@@ -5,12 +5,10 @@ import {faWhatsapp} from '@fortawesome/free-brands-svg-icons'
 import { faEnvelope, faHeart } from '@fortawesome/free-regular-svg-icons'
 import Image from 'next/image'
 import Search from './search'
-import LinkBox from './link-box'
-import { useRouter } from 'next/router'
+import Nav from './nav'
 
 export default function Header() {
   const [openNav, setOpenNav] = useState(false)
-  const router = useRouter()
 
   return (
     <div className='bg-black translate-all duration-700'>
@@ -63,21 +61,9 @@ export default function Header() {
           </div>
         </div>
       </div>
-      <div
-        className={`${
-          openNav ? 'block' : 'hidden'
-        } sm:block pt-1 shadow-md border-b-[3px] border-b-gray-300 bg-white`}
-      >
-        <div className='mx-4 sm:max-w-7xl sm:mx-auto sm:px-2'>
-          <div className='flex flex-col sm:flex-row justify-start sm:items-center space-x-1'>
-            <LinkBox href='/' active={router.pathname === ''}>Home</LinkBox>
-            <LinkBox href='/hot-deals' active={router.pathname === 'hot-deals'}>Hot Deals</LinkBox>
-            <LinkBox href='/collections' active={router.pathname === 'collections'}>Collections</LinkBox>
-            <LinkBox href='/brands' active={router.pathname === 'brands'}>Brands</LinkBox>
-            <LinkBox href='/our-story' active={router.pathname === 'our-story'}>Our Story</LinkBox>
-          </div>
-        </div>
-      </div>
+      <>
+        <Nav isOpen={openNav} />
+      </>
     </div>
   )
 }

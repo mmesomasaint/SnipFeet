@@ -1,7 +1,7 @@
 import Head from "next/head"
 import Footer from "../../components/footer"
-import Header from "../../components/header"
-import ProductInfo from "../../components/product-info"
+import Header from "../../components/header/header"
+import ProductInfo from "../../components/product/product-info"
 import { getProductBySlug, getProductSlug } from "../../lib/product"
 
 export default function Product({product}) {
@@ -15,7 +15,7 @@ export default function Product({product}) {
         <div className="px-2 py-5 sm:max-w-7xl sm:mx-auto"><span className="text-4xl font-bold ">{product.name}</span></div>
       </section>
       <main className='sm:max-w-7xl sm:mx-auto px-2'>
-        <ProductInfo product={product} />
+        {product && <ProductInfo product={product} />}
       </main>
       <Footer />
     </div>
@@ -28,11 +28,11 @@ export const getStaticPaths = async() => {
   return {
     paths: slugs.map(slug => `/products/${slug}`),
     fallback: true
-  }
+  } 
 }
 
-export const getStaticProps = async({preview, params}) => {
-  const product = await getProductBySlug(params?.slug, preview) 
+export const getStaticProps = async({preview=false, params}) => {
+  const product = await getProductBySlug(params.slug, preview) 
   return {
     props: {
       product

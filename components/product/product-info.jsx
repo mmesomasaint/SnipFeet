@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHeart as wished } from '@fortawesome/free-solid-svg-icons'
 import { faHeart as notWished } from '@fortawesome/free-regular-svg-icons'
 import { faWhatsapp, faFacebook, faInstagram } from '@fortawesome/free-brands-svg-icons'
-import Slider from './slider'
+import Slider from '../slider'
 
 export default function ProductInfo({ product }) {
   const [hasWished, setHasWished] = useState(false)
@@ -30,11 +30,11 @@ export default function ProductInfo({ product }) {
               <span className='md:col-span-3 lg:col-span-2 text-lg font-normal leading-none opacity-40'>
                 Product ID:
               </span>{' '}
-              <span className='md:col-span-7 lg:col-span-7 text-lg font-normal leading-none font-medium'>
+              <span className='md:col-span-7 lg:col-span-7 text-lg leading-none font-medium'>
                 {id}
               </span>
             </div>
-            <div className='grid md:grid-cols-10 lg:grid-cols-9 lg:grid-cols-9'>
+            <div className='grid md:grid-cols-10 lg:grid-cols-9'>
               <span className='md:col-span-3 lg:col-span-2 opacity-40 font-normal text-base'>
                 Collections:
               </span>

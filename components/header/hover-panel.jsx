@@ -1,9 +1,10 @@
+import Link from "next/link"
 import { useMemo, useState } from "react"
 import { Image } from "react-datocms"
 
 export default function HoverPanel({items}) {
-  const links = items.map(item => item.name)
-  const [activeLink, setActiveLink] = useState(links[0])
+  const links = items.map(item => ({name:item.name, slug: item.slug}))
+  const [activeLink, setActiveLink] = useState(links[0].name)
   const activeImage = useMemo(() => {
     const [activeItem] = items.filter(item => item.name === activeLink)
     return activeItem.image
@@ -15,15 +16,15 @@ export default function HoverPanel({items}) {
         <div className='sm:col-span-1 md:col-span-2 flex flex-col items-center justify-center'>
           {links.map((link) => (
             <div
-              key={link}
-              onMouseOver={() => setActiveLink(link)}
+              key={link.slug}
+              onMouseOver={() => setActiveLink(link.name)}
               className={`${
-                activeLink === link
+                activeLink === link.name
                   ? 'sm:bg-primary-color sm:bg-opacity-20 sm:transform scale-[1.13]'
                   : 'bg-white bg-opacity-100'
               } w-full sm:w-[50%] py-4 px-3 leading-none text-lg text-center font-bold`}
             >
-              {link}
+              <Link href={`/collections/${link.slug}`}>{link.name}</Link>
             </div>
           ))}
         </div>

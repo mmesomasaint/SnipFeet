@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faChevronLeft,
@@ -27,6 +27,12 @@ export default function usePagination(first) {
     },
     [skip]
   )
+
+  // When total changes reset skip and current page.
+  useEffect(() => {
+    setSkip(0)
+    setCurPage(1)
+  }, [total])
 
   return [
     skip,

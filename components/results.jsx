@@ -20,6 +20,7 @@ export default function Results({ deals = false, collections = false, id }) {
     const adjusted_filter = { ...activeFilters }
     if (deals) adjusted_filter['deals'] = id
     else if (collections) adjusted_filter['collections'] = id
+    else adjusted_filter['pattern'] = id
 
     fetch(
       `/api/filter-products?skip=${skip}&filters=${encodeURIComponent(

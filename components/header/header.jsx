@@ -1,7 +1,15 @@
-import { useState } from 'react'
+import { Fragment, useEffect, useRef, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPhone, faNairaSign, faTruckFast, faCartShopping, faMagnifyingGlass, faBars, faClose } from '@fortawesome/free-solid-svg-icons'
-import {faWhatsapp} from '@fortawesome/free-brands-svg-icons'
+import {
+  faPhone,
+  faNairaSign,
+  faTruckFast,
+  faCartShopping,
+  faMagnifyingGlass,
+  faBars,
+  faClose,
+} from '@fortawesome/free-solid-svg-icons'
+import { faWhatsapp } from '@fortawesome/free-brands-svg-icons'
 import { faEnvelope, faHeart } from '@fortawesome/free-regular-svg-icons'
 import Image from 'next/image'
 import Search from './search'
@@ -26,16 +34,27 @@ export default function Header() {
         </div>
       </div>
       <div className='bg-black border-b-4 border-b-primary-color'>
-        <div className='flex flex-col space-y-3 sm:flex-row sm:space-y-0 justify-between items-center pt-2 pb-0 sm:py-6 mx-2 sm:max-w-7xl sm:mx-auto sm:px-2'>
-          <div className=''>
+        <div className='flex space-y-3 flex-row sm:space-y-0 justify-between items-center pt-2 pb-0 sm:py-6 mx-2 sm:max-w-7xl sm:mx-auto sm:px-2'>
+          <div className='flex justify-between'>
+            <div
+              className='sm:hidden flex items-center mx-1'
+              onClick={() => setOpenNav((prev) => !prev)}
+            >
+              <FontAwesomeIcon
+                icon={openNav ? faClose : faBars}
+                className={`w-7 h-7 text-white ${
+                  openNav ? 'bg-primary-color' : 'bg-transparent'
+                }`}
+              />
+            </div>
             <Image src='/logo.png' width={200} height={50} alt='store logo' />
           </div>
           <>
             <Search />
           </>
-          <div className='flex space-x-10 sm:space-x-3'>
-            <div className='block lg:hidden'>
-              <IconPlusUnderText icon={faMagnifyingGlass} text='search' />
+          <div className='w-auto sm:w-[60%] lg:w-auto relative flex space-x-4 sm:space-x-3 items-center'>
+            <div className='sm:block hidden'>
+              <Search mini />
             </div>
             <IconPlusUnderText icon={faHeart} text='your wishlist' badge={2} />
             <IconPlusUnderText
@@ -43,22 +62,10 @@ export default function Header() {
               text='your cart'
               badge={5}
             />
-            <div
-              className='sm:hidden flex items-center'
-              onClick={() => setOpenNav((prev) => !prev)}
-            >
-              <div
-                className={`flex justify-center items-center w-10 h-10 ${
-                  openNav ? 'bg-primary-color' : 'bg-transparent'
-                }`}
-              >
-                <IconPlusUnderText
-                  icon={openNav ? faClose : faBars}
-                  text='Close Nav'
-                />
-              </div>
-            </div>
           </div>
+        </div>
+        <div className='sm:hidden block'>
+          <Search mini />
         </div>
       </div>
       <>
@@ -68,25 +75,29 @@ export default function Header() {
   )
 }
 
-function IconPlusSideText({icon, text}) {
+function IconPlusSideText({ icon, text }) {
   return (
-    <div className="flex items-center space-x-1 sm:space-x-2 p-1">
+    <div className='flex items-center space-x-1 sm:space-x-2 p-1'>
       <FontAwesomeIcon icon={icon} className='text-primary-color' />
-      <span className="text-white text-xs md:text-sm font-normal sm:font-medium">{text}</span>
+      <span className='text-white text-xs md:text-sm font-normal sm:font-medium'>
+        {text}
+      </span>
     </div>
   )
 }
 
-function IconPlusUnderText({icon, text, badge}) {
+function IconPlusUnderText({ icon, text, badge }) {
   return (
-    <div className='p-1 m-2 w-fit'>
+    <div className='p-1 m-2 w-fit flex-shrink-0'>
       <div className='relative w-fit mx-auto'>
         <FontAwesomeIcon icon={icon} className='text-white text-2xl' />
-        {badge && <div className='absolute -top-2 -right-2 w-4 h-4 bg-primary-color rounded-full flex justify-center items-center text-white text-xs font-medium'>
-          {badge}
-        </div>}
+        {badge && (
+          <div className='absolute -top-2 -right-2 w-4 h-4 bg-primary-color rounded-full flex justify-center items-center text-white text-xs font-medium'>
+            {badge}
+          </div>
+        )}
       </div>
-      <div className='hidden sm:block capitalize text-sm font-medium text-white text-center'>
+      <div className='hidden md:block capitalize text-sm font-medium text-white text-center'>
         {text}
       </div>
     </div>

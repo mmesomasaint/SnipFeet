@@ -1,7 +1,7 @@
-import { getAllCategoryNames } from "../../lib/category";
+import { getAllCollectionNames } from "../../lib/category";
 
 export default async function handler(req, res) {
-  const categories = await getAllCategoryNames()
+  const categories = await getAllCollectionNames()
   if (!categories) {
     res.status(401).json({message: "Something went wrong"}) 
   } 

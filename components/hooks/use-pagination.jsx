@@ -73,7 +73,7 @@ export default function usePagination(first) {
             </>
           )}
 
-          <button className='border border-primary-color leading-none text-sm font-medium w-8 h-8' disabled>{curPage}</button>
+          <button className='border border-primary-color bg-primary-color leading-none text-sm text-white font-medium w-8 h-8' disabled>{curPage}</button>
 
           {hasNext() && (
             <>

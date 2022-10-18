@@ -14,9 +14,19 @@ export default function Collection({ collection }) {
       </Head>
       <Header />
       <main className='sm:max-w-7xl sm:mx-auto px-2'>
-      <div className='relative mt-6'>
-        <div className='absolute inset-0 z-10 bg-[rgba(0,0,0,0.35)] rounded-xl flex justify-center items-center'><span className='text-4xl text-white font-bold'>{collection?.name}</span></div>
-        {collection && <Image data={collection.image.responsiveImage} className='rounded-xl' />}</div>
+        <div className='relative mt-6'>
+          <div className='absolute inset-0 z-10 bg-[rgba(0,0,0,0.35)] rounded-xl flex justify-center items-center'>
+            <span className='text-3xl sm:text-4xl text-white font-semibold sm:font-bold'>
+              {collection?.name}
+            </span>
+          </div>
+          {collection && (
+            <Image
+              data={collection.image.responsiveImage}
+              className='rounded-xl'
+            />
+          )}
+        </div>
         <Results id={collection?.id} collections />
       </main>
       <Footer />

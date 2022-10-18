@@ -33,7 +33,7 @@ export default function Header() {
           <>
             <Search />
           </>
-          <div className='flex space-x-8 sm:space-x-3'>
+          <div className='flex space-x-10 sm:space-x-3'>
             <div className='block lg:hidden'>
               <IconPlusUnderText icon={faMagnifyingGlass} text='search' />
             </div>

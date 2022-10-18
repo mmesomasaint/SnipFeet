@@ -56,7 +56,7 @@ export default function useFilter(isDeals = false, isCollections = false) {
               >
                 <FontAwesomeIcon
                   icon={faClose}
-                  className='lg:hidden absolute top-2 right-2 text-primary-color'
+                  className='lg:hidden absolute top-2 right-4 text-primary-color text-xl border border-primary-color w-5 h-5 focus:transform focus:scale-[1.09]'
                   onClick={() => setShowFiltersPanel(false)}
                 />
                 {!isCollections && (

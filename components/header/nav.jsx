@@ -46,12 +46,12 @@ export default function Nav({isOpen}) {
           </LinkBox>
           <LinkBox
             href='/brands'
-            active={router.pathname === 'brands'}
+            active={router.pathname === '/brands'}
             text='Brands'
           />
           <LinkBox
             href='/our-story'
-            active={router.pathname === 'our-story'}
+            active={router.pathname === '/our-story'}
             text='Our Story'
           />
         </div>

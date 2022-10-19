@@ -5,8 +5,8 @@ import ListGroup from './group/list-group'
 import useFilter from './hooks/use-filter'
 import usePagination from './hooks/use-pagination'
 
-export default function Results({ deals = false, collections = false, id }) {
-  const [activeFilters, FiltersPanel, showPanel] = useFilter(deals, collections)
+export default function Results({ brands=false, deals = false, collections = false, id }) {
+  const [activeFilters, FiltersPanel, showPanel] = useFilter(brands, deals, collections)
   const [skip, setTotalProducts, PagePanel] = usePagination(3)
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(true)
@@ -20,6 +20,7 @@ export default function Results({ deals = false, collections = false, id }) {
     const adjusted_filter = { ...activeFilters }
     if (deals) adjusted_filter['deals'] = id
     else if (collections) adjusted_filter['collections'] = id
+    else if (brands) adjusted_filter['brands'] = id
     else adjusted_filter['pattern'] = id
 
     fetch(
@@ -42,7 +43,7 @@ export default function Results({ deals = false, collections = false, id }) {
   }, [activeFilters, skip])
 
   return (
-    <div className='relative grid grid-cols-1 lg:grid-cols-7 gap-5 my-6'>
+    <div id='list-top' className='relative grid grid-cols-1 lg:grid-cols-7 gap-5 my-6'>
       <div className='lg:col-span-2'>
         <FiltersPanel />
       </div>

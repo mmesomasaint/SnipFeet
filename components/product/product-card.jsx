@@ -72,12 +72,12 @@ function LongVerticalCard({ product }) {
   const { id, name, price, mainImage, slug } = product
 
   return (
-    <div className='w-72 sm:w-52 flex-shrink-0 p-4 bg-white hover:shadow-xl rounded-sm m-4'>
+    <div className='w-full sm:w-auto sm:w-[12.6rem] md:w-[11.5rem] lg:w-[12.2rem] xl:w-[15rem] p-4 bg-white hover:shadow-xl rounded-sm m-4'>
       <div>
         <Image data={mainImage.responsiveImage} />
       </div>
       <div className='w-full'>
-        <div className='my-2 text-base font-medium leading-tight hover:underline line-clamp-2'>
+        <div className='my-2 text-base font-medium leading-tight hover:underline line-clamp-2 sm:line-clamp-1'>
           <Link href={`/products/${slug}`}>{name}</Link>
         </div>
         <div className='text-xl font-bold my-2'>${price}</div>

@@ -34,19 +34,22 @@ export default function Search({ mini }) {
           {results.length > 0 && <ResultsBox results={results} />}
         </div>
       ) : (
-        <div className='hidden lg:flex h-fit w-[50%]'>
-          <Filter />
-          <input
-            name='search'
-            value={query}
-            className='p-3 text-sm font-medium flex-grow focus:outline-none focus:border-none'
-            autoComplete='search'
-            placeholder='Search here'
-            onChange={(e) => setQuery(e.target.value)}
-          />
-          <button className='rounded-r-full bg-primary-color text-white py-3 px-10 text-sm font-medium hover:opacity-90'>
-            Search
-          </button>
+        <div className='relative lg:w-[50%]'>
+          <div className='hidden lg:flex h-fit'>
+            <Filter />
+            <input
+              name='search'
+              value={query}
+              className='p-3 text-sm font-medium flex-grow focus:outline-none focus:border-none'
+              autoComplete='search'
+              placeholder='Search here'
+              onChange={(e) => setQuery(e.target.value)}
+            />
+            <button className='rounded-r-full bg-primary-color text-white py-3 px-10 text-sm font-medium hover:opacity-90'>
+              Search
+            </button>
+          </div>
+          {results.length > 0 && <ResultsBox results={results} />}
         </div>
       )}
     </>
@@ -57,7 +60,10 @@ function ResultsBox({ results }) {
   return (
     <div className='absolute top-[100%] z-50 w-full max-h-[calc(100%_*_5)] p-2 rounded bg-white overflow-y-auto'>
       {results?.map((result) => (
-        <div className='py-2 text-lg font-medium text-gray-700'>
+        <div
+          key={result.name}
+          className='py-2 text-lg font-medium text-gray-700'
+        >
           <Link href={`/search?q=${result.name}`}>{result.name}</Link>
         </div>
       ))}

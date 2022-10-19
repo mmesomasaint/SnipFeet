@@ -8,7 +8,7 @@ export default async function handler(req, res) {
     res.status(401).json({message: "Invalid API"}) 
   }
 
-  const data = await getFilteredProducts({...filters, ['brand']: filters.brands?.shift()}, skip)
+  const data = await getFilteredProducts(filters, skip)
   if (!data) {
     res.status(401).json({message: "Something went wrong"}) 
   }

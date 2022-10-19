@@ -12,15 +12,15 @@ export default function usePagination(first) {
   const [skip, setSkip] = useState(0)
   const [curPage, setCurPage] = useState(1)
   const hasNext = useCallback(
-    (next=1) => {
+    (next = 1) => {
       const curContent = skip + first
-      const nextContent = first * next
-      return curContent + nextContent <= total
+      const nextContent = first * (next - 1)
+      return curContent + nextContent < total
     },
     [skip, total]
   )
   const hasPrev = useCallback(
-    (prev=1) => {
+    (prev = 1) => {
       const curContent = skip + first
       const prevContent = first * prev
       return curContent - prevContent > 0
@@ -39,7 +39,10 @@ export default function usePagination(first) {
     setTotal,
     () => {
       return (
-        <div className='w-full flex gap-2 justify-center items-center my-3'>
+        <a
+          className='w-full flex gap-2 justify-center items-center my-3'
+          href='#list-top'
+        >
           {hasPrev(2) && (
             <FontAwesomeIcon
               icon={faBackwardStep}
@@ -73,7 +76,12 @@ export default function usePagination(first) {
             </>
           )}
 
-          <button className='border border-primary-color bg-primary-color leading-none text-sm text-white font-medium w-8 h-8' disabled>{curPage}</button>
+          <button
+            className='border border-primary-color bg-primary-color leading-none text-sm text-white font-medium w-8 h-8'
+            disabled
+          >
+            {curPage}
+          </button>
 
           {hasNext() && (
             <>
@@ -82,7 +90,7 @@ export default function usePagination(first) {
                   setSkip(first * curPage)
                   setCurPage(curPage + 1)
                 }}
-                className='border border-gray-500 leading-none text-sm text-primary-color font-medium w-6 h-6' 
+                className='border border-gray-500 leading-none text-sm text-primary-color font-medium w-6 h-6'
               >
                 {curPage + 1}
               </button>
@@ -107,7 +115,7 @@ export default function usePagination(first) {
               }}
             />
           )}
-        </div>
+        </a>
       )
     },
   ]

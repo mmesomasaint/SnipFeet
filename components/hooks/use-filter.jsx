@@ -2,7 +2,11 @@ import { useState, useEffect, useCallback } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faClose } from '@fortawesome/free-solid-svg-icons'
 
-export default function useFilter(isDeals = false, isCollections = false) {
+export default function useFilter(
+  isBrands = false,
+  isDeals = false,
+  isCollections = false
+) {
   const DEFAULTFILTERS = {
     collections: [],
     brands: [],
@@ -11,7 +15,7 @@ export default function useFilter(isDeals = false, isCollections = false) {
     deals: [],
   }
   const [filters, setFilters] = useState(DEFAULTFILTERS)
-  const [activeFilters, setActiveFilters] = useState(DEFAULTFILTERS)
+  const [activeFilters, setActiveFilters] = useState({...DEFAULTFILTERS, ['brands']: ""})
   const [showFiltersPanel, setShowFiltersPanel] = useState(false)
 
   useEffect(() => {
@@ -34,7 +38,7 @@ export default function useFilter(isDeals = false, isCollections = false) {
         .filter((obj) => obj.active === true)
         .map((obj) => obj.id)
     }
-    setActiveFilters(active_list)
+    setActiveFilters({...active_list, ['brands']: active_list.brands.shift()})
   }, [filters])
 
   const updateFilters = useCallback((update, key) => {
@@ -42,13 +46,19 @@ export default function useFilter(isDeals = false, isCollections = false) {
   })
 
   return [
+    // We only need one brand in brands 
     activeFilters,
     () => {
       return (
         <>
           {filters && (
             <>
-              {showFiltersPanel && <div className='fixed inset-0 z-20 bg-[rgba(0,0,0,0.45)]' onClick={() => setShowFiltersPanel(false)} />}
+              {showFiltersPanel && (
+                <div
+                  className='fixed inset-0 z-20 bg-[rgba(0,0,0,0.45)]'
+                  onClick={() => setShowFiltersPanel(false)}
+                />
+              )}
               <div
                 className={`absolute w-full lg:w-fit z-30 lg:static bg-white p-5 rounded-xl flex flex-col gap-4 ${
                   showFiltersPanel ? 'block' : 'hidden'
@@ -70,7 +80,12 @@ export default function useFilter(isDeals = false, isCollections = false) {
                 {!isDeals && (
                   <Deals deals={filters.deals} updateDeals={updateFilters} />
                 )}
-                <Brands brands={filters.brands} updateBrands={updateFilters} />
+                {!isBrands && (
+                  <Brands
+                    brands={filters.brands}
+                    updateBrands={updateFilters}
+                  />
+                )}
               </div>
             </>
           )}
@@ -208,6 +223,8 @@ function Brands({ brands, updateBrands }) {
             key={brand.id}
             onClick={() => {
               const newBrands = brands.map((_b) => {
+                // A shoe has only one brand.
+                _b.active = false
                 if (_b.id === brand.id) {
                   _b.active = !brand.active
                 }

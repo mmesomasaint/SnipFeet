@@ -7,7 +7,7 @@ export default function LinkBox({active=false, href, text, full=false, children}
   const [open, setOpen] = useState(false)
 
   return (
-    <Link href={`${href}`}>
+    <Link href={`${href || '#'}`}>
       <div
         className='my-1 mx-1 sm:mx-4 sm:first:ml-0 py-2 px-2 sm:px-4 sm:first:pl-0 w-fit group cursor-pointer'
         onClick={() => setOpen((prev) => !prev)}

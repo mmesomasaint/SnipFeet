@@ -7,10 +7,11 @@ import { getAllCollectionSlugs, getCollectionBySlug } from '../../lib/category'
 import { Image } from 'react-datocms'
 
 export default function Collection({ collection }) {
+  const title = (collection ? 'Collection | ' + collection.name : 'Collection ') + '- SnipFeet'
   return (
     <div className=' bg-[#b9f8e9]'>
       <Head>
-        <title>{collection?.name} | SnipFeet</title>
+        <title>{title}</title>
       </Head>
       <Header />
       <main className='sm:max-w-7xl sm:mx-auto px-2'>

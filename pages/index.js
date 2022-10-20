@@ -14,7 +14,7 @@ export default function Home({showcase, recent, topCollections, newProducts, dai
   return (
     <div className='bg-[#b9f8e9]'>
       <Head>
-        <title>SnipFeet - Home</title>
+        <title>Home - SnipFeet</title>
       </Head>
       <Header />
 

@@ -1,10 +1,13 @@
 import '../styles/globals.css'
 import { SnipcartProvider } from 'use-snipcart'
+import { WishListProvider } from '../components/hooks/use-wishlist'
 
 function MyApp({ Component, pageProps }) {
   return (
     <SnipcartProvider>
-      <Component {...pageProps} />
+      <WishListProvider>
+        <Component {...pageProps} />
+      </WishListProvider>
     </SnipcartProvider>
   )
 }

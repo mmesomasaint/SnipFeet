@@ -1,22 +1,32 @@
-import { Fragment, useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faPhone,
   faNairaSign,
   faTruckFast,
   faCartShopping,
-  faMagnifyingGlass,
   faBars,
   faClose,
+  faHeart as filledHeart,
 } from '@fortawesome/free-solid-svg-icons'
 import { faWhatsapp } from '@fortawesome/free-brands-svg-icons'
-import { faEnvelope, faHeart } from '@fortawesome/free-regular-svg-icons'
+import {
+  faEnvelope,
+  faHeart as shallowHeart,
+} from '@fortawesome/free-regular-svg-icons'
 import Image from 'next/image'
 import Search from './search'
 import Nav from './nav'
+import { useSnipcart } from 'use-snipcart/useSnipcart'
+import { useRouter } from 'next/router'
+import useWishList from '../hooks/use-wishlist'
 
 export default function Header() {
   const [openNav, setOpenNav] = useState(false)
+  const { cart } = useSnipcart()
+  const {count} = useWishList()
+  const router = useRouter()
+  const inWishPage = router.pathname === '/wishlist'
 
   return (
     <div className='bg-black translate-all duration-700'>
@@ -47,7 +57,7 @@ export default function Header() {
                 }`}
               />
             </div>
-            <Image src='/logo.png' width={200} height={50} alt='store logo' />
+            <Image src='/logo.png' width={200} height={50} alt='store logo' onClick={() => router.push('/')} />
           </div>
           <>
             <Search />
@@ -56,11 +66,18 @@ export default function Header() {
             <div className='sm:block hidden'>
               <Search mini />
             </div>
-            <IconPlusUnderText icon={faHeart} text='your wishlist' badge={2} />
             <IconPlusUnderText
+              active={inWishPage}
+              icon={inWishPage ? filledHeart : shallowHeart}
+              text='your wishlist'
+              badge={count}
+              onClick={() => router.push('/wishlist')}
+            />
+            <IconPlusUnderText
+              className='snipcart-checkout'
               icon={faCartShopping}
               text='your cart'
-              badge={5}
+              badge={cart?.items?.count || 0}
             />
           </div>
         </div>
@@ -86,18 +103,18 @@ function IconPlusSideText({ icon, text }) {
   )
 }
 
-function IconPlusUnderText({ icon, text, badge }) {
+function IconPlusUnderText({ icon, text, badge, className = '', onClick=() => {}, active=false }) {
   return (
-    <div className='p-1 m-2 w-fit flex-shrink-0'>
+    <div className={`${className} ${active ? ' transform scale-[1.07]' : ''} p-1 m-2 w-fit flex-shrink-0`} onClick={onClick}>
       <div className='relative w-fit mx-auto'>
-        <FontAwesomeIcon icon={icon} className='text-white text-2xl' />
+        <FontAwesomeIcon icon={icon} className={`${active ? 'text-primary-color' : 'text-white'} text-2xl`} />
         {badge && (
           <div className='absolute -top-2 -right-2 w-4 h-4 bg-primary-color rounded-full flex justify-center items-center text-white text-xs font-medium'>
             {badge}
           </div>
         )}
       </div>
-      <div className='hidden md:block capitalize text-sm font-medium text-white text-center'>
+      <div className={`${active ? 'text-primary-color' : 'text-white'} hidden md:block capitalize text-sm font-medium text-center`}>
         {text}
       </div>
     </div>

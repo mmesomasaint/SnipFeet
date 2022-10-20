@@ -113,7 +113,7 @@ const Slider = ({
         {isMounted && slider.current && (
           <>
             <div
-              className={`absolute left-2 sm:left-0 top-0 z-30 h-full ${
+              className={`absolute left-2 sm:left-0 top-0 z-10 h-full ${
                 autoplay
                   ? 'group-hover:flex items-center hidden'
                   : 'flex items-center'
@@ -132,7 +132,7 @@ const Slider = ({
               </button>
             </div>
             <div
-              className={`absolute right-2 sm:right-0 top-0 z-30 h-full ${
+              className={`absolute right-2 sm:right-0 top-0 z-10 h-full ${
                 autoplay
                   ? 'group-hover:flex items-center hidden'
                   : 'flex items-center'

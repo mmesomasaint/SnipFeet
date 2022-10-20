@@ -33,7 +33,7 @@ export default function Brands({ initBrands }) {
       <main className='sm:max-w-7xl sm:mx-auto px-2'>
         <div className='my-6 bg-white rounded-xl p-3 grid grid-cols-5 gap-2 place-items-center'>
           {brands.map((brand) => (
-            <div className='w-[200px]'>
+            <div key={brand.slug} className='w-[200px]'>
               <Image data={brand.logo.responsiveImage} />
               <span className='block w-full text-center text-lg font-bold text-gray-800 leading-none my-2'>
                 <Link href={`/brands/${brand.slug}`}>{brand.name}</Link>

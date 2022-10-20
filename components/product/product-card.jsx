@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faHeart as faHeart2,
@@ -7,10 +7,17 @@ import {
 import { faHeart as faHeart1 } from '@fortawesome/free-regular-svg-icons'
 import Link from 'next/link'
 import { Image } from 'react-datocms'
+import useWishList from '../hooks/use-wishlist'
 
 function ExtraLongVerticalCard({ product }) {
-  const { name, price, mainImage, slug } = product
-  const [wished, setWished] = useState(false)
+  const { name, price, mainImage, slug, id } = product
+  const {addToList, removeFromList, inList} = useWishList()
+  const [wished, setWished] = useState(inList(id))
+
+  useEffect(() => {
+    if (wished) addToList(id)
+    else removeFromList(id)
+  }, [wished])
 
   return (
     <div className='w-full sm:w-auto sm:w-[12.6rem] md:w-[11.5rem] lg:w-[12.2rem] xl:w-[15rem] border border-gray-300 hover:border-primary-color shadow-md sm:shadow-none hover:shadow-md rounded-sm p-1 my-3 sm:mx-0 lg:my-0'>
@@ -44,7 +51,14 @@ function ExtraLongVerticalCard({ product }) {
         </div>
       </div>
       <div className='flex justify-evenly items-center w-full mt-3'>
-        <div className='flex items-center space-x-2 h-fit w-fit py-1 px-4 cursor-pointer'>
+        <button
+          className='snipcart-add-item flex items-center space-x-2 h-fit w-fit py-1 px-4 cursor-pointer'
+          data-item-id={id}
+          data-item-image={mainImage.responsiveImage.src}
+          data-item-name={name}
+          data-item-url='/'
+          data-item-price={price}
+        >
           <FontAwesomeIcon
             icon={faCartPlus}
             className='text-primary-color text-2xl lg:text-base xl:text-xl'
@@ -52,7 +66,7 @@ function ExtraLongVerticalCard({ product }) {
           <span className='capitalize text-base font-medium text-primary-color leading-none hidden lg:block'>
             Buy
           </span>
-        </div>
+        </button>
         <div className='flex justify-evenly items-center gap-2 h-fit w-fit py-1 px-4 cursor-pointer'>
           <FontAwesomeIcon
             icon={wished ? faHeart2 : faHeart1}
@@ -161,7 +175,14 @@ function LongHorizontal({ product }) {
             </span>
           </div>
           <div>
-            <button className='w-fit sm:w-[12rem] py-2 sm:py-3 px-5 sm:px-0 bg-primary-color text-white leading-none font-bold rounded-md'>
+            <button
+              className='snipcart-add-item w-fit sm:w-[12rem] py-2 sm:py-3 px-5 sm:px-0 bg-primary-color text-white leading-none font-bold rounded-md'
+              data-item-id={id}
+              data-item-image={mainImage.responsiveImage.src}
+              data-item-name={name}
+              data-item-url='/'
+              data-item-price={price}
+            >
               Add to Cart
             </button>
           </div>

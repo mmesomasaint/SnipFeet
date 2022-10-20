@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Image } from 'react-datocms'
 import Link from 'next/link'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -6,10 +6,17 @@ import { faHeart as wished } from '@fortawesome/free-solid-svg-icons'
 import { faHeart as notWished } from '@fortawesome/free-regular-svg-icons'
 import { faWhatsapp, faFacebook, faInstagram } from '@fortawesome/free-brands-svg-icons'
 import Slider from '../slider'
+import useWishList from '../hooks/use-wishlist'
 
 export default function ProductInfo({ product }) {
   const [hasWished, setHasWished] = useState(false)
   const { id, name, price, sizes, categories, colors, gallery } = product
+  const {addToList, removeFromList} = useWishList()
+
+  useEffect(() => {
+    if (hasWished) addToList(id)
+    else removeFromList(id)
+  }, [hasWished])
 
   return (
     <div className='bg-transparent'>

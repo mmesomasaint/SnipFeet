@@ -16,6 +16,7 @@
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@headlessui/react": "^1.6.6",
     "@tailwindcss/line-clamp": "^0.4.2",
+    "cookies-next": "^2.1.1",
     "keen-slider": "^6.8.2",
     "next": "12.3.1",
     "react": "18.2.0",

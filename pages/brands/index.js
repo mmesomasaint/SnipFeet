@@ -31,7 +31,7 @@ export default function Brands({ initBrands }) {
         <div className="px-2 py-5 sm:max-w-7xl sm:mx-auto"><span className="text-4xl font-bold ">Brands</span></div>
       </section>
       <main className='sm:max-w-7xl sm:mx-auto px-2'>
-        <div className='my-6 bg-white rounded-xl p-3 grid grid-cols-5 gap-2 place-items-center'>
+        <div className='my-6 bg-white rounded-xl p-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 place-items-center'>
           {brands.map((brand) => (
             <div key={brand.slug} className='w-[200px]'>
               <Image data={brand.logo.responsiveImage} />

@@ -9,9 +9,9 @@ import Slider from '../slider'
 import useWishList from '../hooks/use-wishlist'
 
 export default function ProductInfo({ product }) {
-  const [hasWished, setHasWished] = useState(false)
   const { id, name, price, sizes, categories, colors, gallery } = product
-  const {addToList, removeFromList} = useWishList()
+  const {addToList, removeFromList, inList} = useWishList()
+  const [hasWished, setHasWished] = useState(inList(id))
 
   useEffect(() => {
     if (hasWished) addToList(id)
@@ -22,7 +22,7 @@ export default function ProductInfo({ product }) {
     <div className='bg-transparent'>
       <div className='bg-white p-5 rounded-xl my-5 grid grid-cols-1 md:grid-cols-2 gap-4'>
         <Slider thumbs>
-          {gallery.map((img) => (
+          {gallery.map((img, idx) => (
             <div key={img.responsiveImage.src} className='h-fit'>
               <Image data={img.responsiveImage} />
             </div>
@@ -47,8 +47,8 @@ export default function ProductInfo({ product }) {
               </span>
               <div className='md:col-span-7 lg:col-span-7 inline-flex items-center'>
                 {categories.map((category) => (
-                  <div className='text-sm leading-none font-medium text-gray-500 border-r last:border-none border-primary-color border-opacity-50 py-1 px-5 first:pl-0 hover:underline'>
-                    <Link key={category.slug} href={category.slug}>
+                  <div key={category.slug} className='text-sm leading-none font-medium text-gray-500 border-r last:border-none border-primary-color border-opacity-50 py-1 px-5 first:pl-0 hover:underline'>
+                    <Link href={category.slug}>
                       {category.name.replace('Collection', '')}
                     </Link>
                   </div>
@@ -65,7 +65,7 @@ export default function ProductInfo({ product }) {
             <div className='grid md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-7'>
               <span className='text-gray-600 opacity-70'>Color(s):</span>
               <div className='md:col-span-3 lg:col-span-5 xl:col-span-6 flex gap-2'>
-                {colors.map((color) => (
+                {colors.map((color, idx) => (
                   <div
                     key={color.name}
                     style={{ backgroundColor: `${color.name}` }}

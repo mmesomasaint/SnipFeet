@@ -22,7 +22,7 @@ export default function WishList() {
         setTotalProducts(data.pages.count)
         setWishList(data.products)
       })
-  }, [skip])
+  }, [skip, list])
 
   return (
     <div className=' bg-[#b9f8e9]'>
@@ -50,7 +50,7 @@ export default function WishList() {
           </>
         ) : (
           <div className='h-fit w-full text-center font-medium text-sm text-gray-800 py-4 leading-none'>
-            You don't like any shoes yet!
+            You don&apos;t like any shoes yet!
           </div>
         )}
       </main>

@@ -1,6 +1,6 @@
 import ProductCard from '../product/product-card'
 
-export default function ({ loading = false, products }) {
+export default function ListGroup({ loading = false, products }) {
   const Output = () => (
     <>
       {products.length > 0 ? (

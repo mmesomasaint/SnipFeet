@@ -44,7 +44,7 @@ export const getStaticPaths = async () => {
 }
 
 export const getStaticProps = async ({ params }) => {
-  const brand = await getBrandBySlug(params.slug)
+  const brand = await getBrandBySlug(params?.slug)
 
   return {
     props: {

@@ -8,7 +8,7 @@ export default function HoverPanel({items}) {
   const activeImage = useMemo(() => {
     const [activeItem] = items.filter(item => item.name === activeLink)
     return activeItem.image
-  }, [activeLink])
+  }, [activeLink, items])
 
   return (
     <div className='left-5 w-full min-h-min bg-white'>
